@@ -1,0 +1,28 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper functions
+    function isSignedIn() { return request.auth != null; }
+    function isValidId(id) { return id is string && id.size() <= 128; }
+    
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    match /employees/{employeeId} {
+      allow read: if true; // Allow reading employee list for selection
+      allow write: if true; // Allow adding new employees (simplified for this demo)
+    }
+
+    match /locations/{locationId} {
+      allow read: if true;
+      allow write: if true;
+    }
+
+    match /records/{recordId} {
+      allow read: if true;
+      allow write: if true;
+    }
+  }
+}

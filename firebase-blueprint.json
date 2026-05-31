@@ -1,0 +1,107 @@
+{
+  "entities": {
+    "Employee": {
+      "title": "Employee",
+      "description": "Details of an employee responsible for actions.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "Full name of the employee" },
+        "sector": { "type": "string", "description": "Department or sector" },
+        "phone": { "type": "string", "description": "WhatsApp phone number" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "sector", "phone"]
+    },
+    "Location": {
+      "title": "Location",
+      "description": "A physical or functional area where events occur.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "Name of the location" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name"]
+    },
+    "Record": {
+      "title": "Non-Conformity Record",
+      "description": "A quality management non-conformity or corrective action record.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "type": { "type": "string", "enum": ["ocorrencia", "acao-corretiva"] },
+        "eventTitle": { "type": "string" },
+        "location": { "type": "string" },
+        "dateDetected": { "type": "string" },
+        "description": { "type": "string" },
+        "immediateAction": { "type": "string" },
+        "actionDate": { "type": "string" },
+        "responsible": { "type": "string" },
+        "responsiblePhone": { "type": "string" },
+        "whySteps": { "type": "array", "items": { "type": "string" } },
+        "rootCause": { "type": "string" },
+        "w2h_what": { "type": "string" },
+        "w2h_why": { "type": "string" },
+        "w2h_where": { "type": "string" },
+        "w2h_when": { "type": "string" },
+        "w2h_who": { "type": "string" },
+        "w2h_how": { "type": "string" },
+        "w2h_howMuch": { "type": "string" },
+        "use5Whys": { "type": "boolean" },
+        "use5W2H": { "type": "boolean" },
+        "useIshikawa": { "type": "boolean" },
+        "ishikawaData": {
+          "type": "object",
+          "properties": {
+            "manpower": { "type": "array", "items": { "type": "object", "properties": { "text": { "type": "string" }, "status": { "type": "string" } } } },
+            "method": { "type": "array", "items": { "type": "object", "properties": { "text": { "type": "string" }, "status": { "type": "string" } } } },
+            "machine": { "type": "array", "items": { "type": "object", "properties": { "text": { "type": "string" }, "status": { "type": "string" } } } },
+            "material": { "type": "array", "items": { "type": "object", "properties": { "text": { "type": "string" }, "status": { "type": "string" } } } },
+            "measurement": { "type": "array", "items": { "type": "object", "properties": { "text": { "type": "string" }, "status": { "type": "string" } } } },
+            "environment": { "type": "array", "items": { "type": "object", "properties": { "text": { "type": "string" }, "status": { "type": "string" } } } }
+          }
+        },
+        "isVerified": { "type": "boolean" },
+        "status": { "type": "string", "enum": ["draft", "submitted", "in_progress", "for_verification", "effective", "ineffective"] },
+        "actionPlan": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "description": { "type": "string" },
+              "responsible": { "type": "string" },
+              "date": { "type": "string" },
+              "status": { "type": "string", "enum": ["pending", "completed"] }
+            },
+            "required": ["id", "description", "responsible", "date", "status"]
+          }
+        },
+        "efficacyVerification": {
+          "type": "object",
+          "properties": {
+            "date": { "type": "string" },
+            "responsible": { "type": "string" },
+            "result": { "type": "string", "enum": ["effective", "ineffective"] },
+            "note": { "type": "string" }
+          },
+          "required": ["date", "responsible", "result", "note"]
+        },
+        "createdAt": { "type": "string", "format": "date-time" }
+      }
+    }
+  },
+  "firestore": {
+    "/employees/{employeeId}": {
+      "schema": "Employee",
+      "description": "Collection of available employees for selection."
+    },
+    "/locations/{locationId}": {
+      "schema": "Location",
+      "description": "Collection of available locations for selection."
+    },
+    "/records/{recordId}": {
+      "schema": "Record",
+      "description": "Collection of submitted records."
+    }
+  }
+}
